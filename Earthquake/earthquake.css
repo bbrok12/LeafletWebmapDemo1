@@ -1,9 +1,36 @@
 body {
     padding: 0;
     margin: 0;
-   }
-   html, body, #earthquakemap {
+}
+
+html, body, #earthquakemap {
     height: 100%;
     width: 100%;
-   }
-   
+}
+
+.info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+.legend {
+    line-height: 1.7;
+    color: #333;
+}
+
+.legend h4 {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+}
+
+.legend i {
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    border-radius: 50%;
+    margin-right: 8px;
+    opacity: 0.9;
+}
