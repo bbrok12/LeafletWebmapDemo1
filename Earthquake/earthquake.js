@@ -7,32 +7,38 @@ var Stadia_StamenTonerDark = L.tileLayer('https://tiles.stadiamaps.com/tiles/sta
 }).addTo(map);
 
 var earthquakeUrl = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson';
+// ...existing code...
 $.getJSON(earthquakeUrl, function(data) {
     L.geoJSON(data, {
         pointToLayer: function(feature, latlng) {
-            var magnitude = feature.properties.mag;
-            var color = 'green';
+            var mag = feature.properties.mag || 0;
+            var alertColor = 'green';
 
-            if (magnitude < 1) {
-                color = 'green';
-                size = 1
-            } else if (magnitude < 3) {
-                color = 'yellow';
-                size = 3
-            } else if (magnitude < 5) {
-                color = 'orange';
-            } else {
-                color = 'red';
-                size = 10
+            if (mag >= 5) {
+                alertColor = 'red';
+            } else if (mag >= 4) {
+                alertColor = 'purple';
+            } else if (mag >= 3) {
+                alertColor = 'yellow';
             }
 
             return L.circleMarker(latlng, {
-                radius: 1 + magnitude*magnitude, // scale the radius based on magnitude
-                color: color,
-                fillColor: color,
-                fillOpacity: 0.7,
-                weight: 1
+                radius: mag * 2,
+                fillColor: alertColor,
+                color: alertColor,
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.6
+
             });
+        },
+        onEachFeature: function(feature, layer) {
+            layer.bindPopup(
+                "<h3>" + feature.properties.title + "</h3>" +
+                "<strong>Magnitude:</strong> " + feature.properties.mag +
+                "<br><strong>Location:</strong> " + feature.properties.place +
+                "<br><strong>Time:</strong> " + new Date(feature.properties.time).toLocaleString()
+            );
         }
     }).addTo(map);
-});
+})
